@@ -1,0 +1,649 @@
+<!-- filepath: index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Barbie — Multihyphenate Creative</title>
+  <meta name="description" content="Portfolio of Barbie — storyteller, performer, and problem-solver across animated adventures.">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0f0a11; --panel:#151019; --panel-2:#120e17;
+      --text:#fff3fb; --muted:#e7cfe1;
+      --pink:#ff4fbf; --rose:#ff9bd6; --pearl:#ffe6f5; --mint:#aefcff;
+      --shadow:0 14px 44px rgba(0,0,0,.35);
+      --radius:18px; --speed:260ms; --ring:0 0 0 3px rgba(255,79,191,.35);
+      /* Mobile-first page gutters */
+      --gutter-xs: clamp(18px, 6vw, 26px);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text);
+      background:
+        radial-gradient(1000px 640px at -10% -10%, rgba(255,79,191,.10), transparent 60%),
+        radial-gradient(900px 600px at 110% 0%, rgba(174,252,255,.08), transparent 60%),
+        var(--bg);
+      font:16px/1.6 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      scroll-behavior:smooth;
+    }
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; height:auto; display:block}
+
+    /* ===== NAVBAR ===== */
+    header{position:sticky; top:0; z-index:40}
+    .navbar-blur{backdrop-filter:saturate(1.15) blur(10px);
+      background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,0));
+      border-bottom:1px solid rgba(255,255,255,.08)}
+    .brand{display:flex; gap:12px; align-items:center; font-weight:1000; letter-spacing:.2px}
+    .logo3d{--s:38px; width:var(--s); height:var(--s); perspective:900px; position:relative}
+    .logo3d .face{position:absolute; inset:0; display:grid; place-items:center; border-radius:12px;
+      background:conic-gradient(from 210deg, var(--pink), var(--rose));
+      color:#0c0710; font-weight:1000; transform-style:preserve-3d; transform:rotateY(0deg);
+      box-shadow:0 6px 18px rgba(0,0,0,.35); animation:spinY 16s linear infinite paused}
+    body[data-mode="playful"] .logo3d .face{animation-play-state:running}
+    @keyframes spinY{to{transform:rotateY(360deg)}}
+
+    .navbar-nav .nav-link{padding:.5rem .65rem; border-radius:10px; color:var(--pearl); opacity:.75; white-space:nowrap}
+    .navbar-nav .nav-link.active, .navbar-nav .nav-link:hover{opacity:1; background:rgba(255,255,255,.08)}
+
+    .actions{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    button,.chip{border:1px solid rgba(255,255,255,.14); background:var(--panel-2); color:var(--text);
+      padding:10px 14px; border-radius:12px; cursor:pointer; transition:transform var(--speed), background var(--speed), border-color var(--speed)}
+    button:hover{transform:translateY(-2px)} button:focus-visible{outline:none; box-shadow:var(--ring)}
+    .primary{background:linear-gradient(135deg, var(--pink), var(--rose)); color:#140912; font-weight:900; border-color:transparent}
+    .ghost{background:transparent}
+
+    /* ===== HERO ===== */
+    .hero{padding:clamp(56px, 9vw, 76px) 0 clamp(20px, 4vw, 36px)}
+    .eyebrow{display:inline-flex; gap:10px; align-items:center}
+    .spark{display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--mint); box-shadow:0 0 16px var(--mint)}
+    .title{font-size:clamp(30px,6.2vw,72px); line-height:1.05; letter-spacing:-.02em; margin:8px 0 12px; font-weight:1000}
+    .title span{color:var(--pink)} .subtitle{color:var(--muted); max-width:72ch}
+    .badgeRow{display:flex; gap:10px; margin-top:12px; flex-wrap:wrap}
+    .chip{background:rgba(255,255,255,.05)} .ctaRow{display:flex; gap:12px; margin-top:18px; flex-wrap:wrap}
+
+    .heroCard{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12); padding:18px; border-radius:var(--radius); box-shadow:var(--shadow)}
+
+    .avatarWrap{position:relative; aspect-ratio:1/1; border-radius:50%; overflow:hidden; border:1px solid rgba(255,255,255,.14);
+      background:radial-gradient(110% 110% at 70% 20%, rgba(255,255,255,.28), rgba(255,255,255,0)),
+                 conic-gradient(from 210deg, rgba(255,79,191,.18), rgba(174,252,255,.12), transparent 220deg);
+      isolation:isolate;}
+    .avatarWrap img{width:100%; height:100%; object-fit:cover}
+    .ring3d{position:absolute; inset:-8% -8% -8% -8%; pointer-events:none; transform-style:preserve-3d; perspective:800px; z-index:-1}
+    .ring3d span{position:absolute; inset:0; border:2px solid rgba(255,255,255,.16); border-radius:50%;
+      transform:rotateX(var(--rx)) rotateY(var(--ry)) translateZ(var(--tz));
+      box-shadow:0 0 20px rgba(255,79,191,.15), inset 0 0 30px rgba(255,255,255,.05);
+      animation:spin 16s linear infinite paused}
+    body[data-mode="playful"] .ring3d span{animation-play-state:running}
+    @keyframes spin{to{transform:rotateX(var(--rx)) rotateY(calc(var(--ry) + 1turn)) translateZ(var(--tz))}}
+    .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:12px}
+    .stat{background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:12px}
+    .stat b{display:block; font-size:24px} .stat small{color:#d9c0d1}
+
+    section{padding:clamp(52px, 9vw, 74px) 0} h2{font-size:clamp(22px,3.2vw,36px); margin:0 0 10px} p.lead{color:var(--muted); margin:0 0 24px}
+
+    /* ===== PROJECT CARDS ===== */
+    .card{position:relative; overflow:hidden; border-radius:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12); box-shadow:var(--shadow);
+      transition:transform 160ms ease, border-color var(--speed), background var(--speed)}
+    .card:hover{border-color:rgba(255,255,255,.22)}
+
+    /* responsive thumb: keep 16/9 and cover */
+    .thumb{aspect-ratio:16/9; overflow:hidden; border-bottom:1px solid rgba(255,255,255,.08)}
+    .thumb img{width:100%; height:100%; object-fit:cover}
+
+    .content{padding:16px}
+    .tag{display:inline-flex; gap:8px; font-size:12px; padding:6px 10px; border-radius:999px;
+         background:linear-gradient(135deg, var(--pink), var(--rose)); color:#140912; font-weight:800}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; color:#f1dce9; font-size:13px; word-break:break-word}
+    .tilt{will-change:transform} body[data-mode="calm"] .tilt:hover{transform:none !important}
+
+    /* ===== Filmography ribbon ===== */
+    .marquee{display:flex; overflow:auto; border:1px solid rgba(255,255,255,.10); border-radius:12px; background:rgba(255,255,255,.04)}
+    .lane{display:flex; gap:14px; padding:12px 16px}
+    .pill{padding:6px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.05); white-space:nowrap}
+
+    /* ===== Modal ===== */
+    .modal-lite{position:fixed; inset:0; display:none; z-index:1000; background:rgba(0,0,0,.55); backdrop-filter:blur(6px)}
+    .modal-lite.open{display:block}
+    .sheet{position:absolute; inset:auto 50% 6% 50%; transform:translateX(-50%);
+      max-width:900px; width:92%; border-radius:18px; border:1px solid rgba(255,255,255,.14);
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03)); box-shadow:var(--shadow);
+      display:flex; flex-direction:column; max-height:88vh}
+    .mhead{position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:12px;
+      padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
+      border-top-left-radius:18px; border-top-right-radius:18px}
+    .mhead .tag{margin-right:auto}
+    .mclose{margin-left:auto; border-radius:10px; border:1px solid rgba(255,255,255,.18); background:var(--panel-2);
+      padding:8px 10px; cursor:pointer}
+    .mbody{padding:16px; overflow:auto}
+    .player{position:relative; aspect-ratio:16/9; width:100%; border-radius:14px; overflow:hidden; border:1px solid rgba(255,255,255,.12); background:#000; margin-top:10px}
+    .player .poster{position:absolute; inset:0; display:grid; place-items:center; color:#fff; font-weight:900; background-size:cover; background-position:center}
+    .player .poster button{background:rgba(0,0,0,.5)}
+
+    /* ===== Carousel ===== */
+    .carousel-lite{position:relative; overflow:hidden; border:1px solid rgba(255,255,255,.12); border-radius:16px; background:rgba(255,255,255,.04)}
+    .track{display:flex; gap:16px; padding:16px; will-change:transform}
+    .tcard{min-width:min(360px, 90%); background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.12); border-radius:14px; padding:16px}
+    .tcard b{display:block; margin-top:8px}
+    .carNav{position:absolute; inset:auto 12px 12px auto; display:flex; gap:8px}
+    .carBtn{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--panel-2);border:1px solid rgba(255,255,255,.14)}
+
+    /* ===== Form / footer ===== */
+    form{display:grid; gap:12px}
+    input, textarea{width:100%; padding:12px 14px; border-radius:12px; border:1px solid rgba(255,255,255,.12);
+      background:var(--panel-2); color:var(--text); outline:none; transition:border-color var(--speed)}
+    input:focus, textarea:focus{border-color: rgba(255,255,255,.25); box-shadow:var(--ring)}
+    .note{font-size:12px; color:#e6cfe0}
+    footer{padding:44px 0 calc(env(safe-area-inset-bottom, 0) + 90px); color:#e6cfe0}
+    .kbd{font-family:ui-monospace, Menlo, Consolas, monospace; font-size:12px; padding:2px 6px; border-radius:6px; border:1px solid rgba(255,255,255,.2)}
+
+    /* ===== Ken cameo ===== */
+    .ken{position:fixed; right:16px; bottom:calc(env(safe-area-inset-bottom, 0) + 16px); z-index:50; display:flex; align-items:center; gap:8px}
+    .ken .bubble{opacity:0; transform:translateY(8px); transition:opacity .2s ease, transform .2s ease;
+      background:linear-gradient(135deg, var(--mint), var(--pink)); color:#0c0710; font-weight:900; border-radius:999px; padding:8px 12px}
+    .ken .bubble.show{opacity:1; transform:translateY(0)}
+    .ken button{width:54px;height:54px;border-radius:50%; border:1px solid rgba(255,255,255,.18); background:var(--panel);
+      display:grid; place-items:center; cursor:pointer; box-shadow:var(--shadow)}
+    .ken svg{width:36px;height:36px}
+    .arm{transform-origin:28px 14px}
+    body[data-mode="playful"] .arm{animation:wave 1.4s ease-in-out infinite}
+    @keyframes wave{0%,100%{transform:rotate(0deg)}50%{transform:rotate(-18deg)}}
+
+    /* ===== Theme picker ===== */
+    .picker{position:fixed; right:16px; top:72px; z-index:45; width:min(320px, 92vw);
+      border:1px solid rgba(255,255,255,.14); border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow:var(--shadow); padding:12px; display:none}
+    .picker.open{display:block}
+    .swatches{display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin:8px 0}
+    .swatch{height:28px; border-radius:8px; border:1px solid rgba(255,255,255,.25); cursor:pointer}
+
+    /* Small screens: tighten brand text */
+    @media (max-width:576px){
+      /* bigger gutters so it doesn't look “perfectly fitted” edge-to-edge */
+      .container{padding-left:var(--gutter-xs); padding-right:var(--gutter-xs)}
+      .brand div:last-child{font-size:18px}
+      /* keep cards readable */
+      #cards .content .lead{font-size:0.98rem}
+      /* flow navbar actions nicely */
+      .actions{gap:8px}
+      .actions > *{flex:1 1 calc(50% - 8px)}
+      .actions label{flex-basis:100%}
+      /* allow stats to wrap on tiny phones */
+      .stats{grid-template-columns:repeat(2,1fr)}
+      /* prevent sneaky horizontal scroll */
+      html, body{overflow-x:hidden}
+    }
+
+    /* Card title sizing (kept from original, with clamp) */
+    #cards .card .content h3{
+      color: var(--text);
+      mix-blend-mode: normal;  /* prevents greenish tint on dark gradients */
+      text-shadow: none;
+      font-size: clamp(20px, 2.6vw, 26px);
+      margin: 6px 0 8px;
+    }
+  </style>
+</head>
+<body data-mode="calm">
+<header>
+  <nav class="navbar navbar-expand-md navbar-dark navbar-blur">
+    <div class="container py-2">
+      <a class="navbar-brand brand" href="#home">
+        <div class="logo3d"><div class="face">B</div></div>
+        <div>Barbie</div>
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-md-0 align-items-md-center gap-1">
+          <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#work">Work</a></li>
+          <li class="nav-item"><a class="nav-link" href="#filmography">Filmography</a></li>
+          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        </ul>
+        <div class="actions mt-3 mt-md-0 ms-md-3">
+          <button id="musicBtn" class="ghost" aria-pressed="false" title="Play Barbie soundtrack mix">♪ Music</button>
+          <button id="modeBtn" class="ghost" aria-pressed="false" title="Toggle Calm / Playful">✨ Playful</button>
+          <button id="gridBtn" class="ghost" title="Grid (G)">🧭 Grid</button>
+          <button id="themeBtn" class="ghost" title="Change theme colors">🎨 Theme</button>
+          <label class="ghost m-0" style="cursor:pointer">📷 Upload photo
+            <input id="avatarInput" type="file" accept="image/*" hidden>
+          </label>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="home" class="container hero">
+  <!-- Bootstrap grid hero -->
+  <div class="row align-items-center g-4">
+    <div class="col-12 col-lg-7">
+      <div class="eyebrow"><span class="spark"></span><span>Storyteller • Performer • Problem-solver</span></div>
+      <h1 class="title">Hi, I’m <span>Barbie</span> — I lead adventures and ship happy endings.</h1>
+      <p class="subtitle">From fairytales to space, I’ve handled high-stakes quests, ensemble casts, and world-building.
+        Below are <strong>case studies with video</strong> showing the challenge, approach, and outcome.</p>
+      <div class="badgeRow">
+        <span class="chip">Leadership</span><span class="chip">Choreography & Music</span>
+        <span class="chip">World-building</span><span class="chip">STEM & Problem-solving</span>
+      </div>
+      <div class="ctaRow">
+        <a class="primary" href="#work" id="viewWorkBtn">View case studies</a>
+        <a class="ghost" href="#contact">Let’s collaborate</a>
+      </div>
+    </div>
+    <div class="col-12 col-lg-5">
+      <div class="heroCard">
+        <div class="avatarWrap">
+          <img id="avatar" src="barbie.png" alt="Barbie portrait" onerror="this.src='';this.alt='Barbie portrait placeholder';">
+          <div class="ring3d" aria-hidden="true">
+            <span style="--rx:32deg; --ry:0deg; --tz:0px;"></span>
+            <span style="--rx:-32deg; --ry:40deg; --tz:0px;"></span>
+            <span style="--rx:0deg; --ry:70deg; --tz:0px;"></span>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat tilt"><b class="counter" data-val="40">40+</b><small>Animated features & series</small></div>
+          <div class="stat tilt"><b class="counter" data-val="25">25+</b><small>Distinct alter-egos</small></div>
+          <div class="stat tilt"><b class="counter" data-val="99">99%</b><small>Happy-ending rate*</small></div>
+        </div>
+        <div class="note" style="margin-top:8px">*estimated across the animated filmography</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<section id="work" class="container">
+  <h2>Selected Case Studies</h2>
+  <p class="lead">Click a card to open a modal with <strong>video + details</strong>.</p>
+  <!-- Bootstrap responsive row-cols for perfect breakpoints -->
+  <div id="cards" class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3"></div>
+</section>
+
+<section id="filmography" class="container">
+  <h2>Filmography Highlights</h2>
+  <p class="lead">Representative range across animated films & series.</p>
+  <div class="marquee" aria-label="Filmography highlights">
+    <div class="lane">
+      <span class="pill">Nutcracker • Ballerina</span><span class="pill">Rapunzel • Painter</span>
+      <span class="pill">Swan Lake • Odette</span><span class="pill">Princess & Pauper • Musical</span>
+      <span class="pill">Fairytopia • Elina</span><span class="pill">Mermaidia • Sea quest</span>
+      <span class="pill">Diamond Castle • Music duo</span><span class="pill">12 Dancing Princesses • Ensemble</span>
+      <span class="pill">Island Princess • Nature ally</span><span class="pill">Three Musketeers • Action</span>
+      <span class="pill">Princess Charm School • Mentor arc</span><span class="pill">A Mermaid Tale • Surf</span>
+      <span class="pill">Star Light Adventure • Space</span><span class="pill">Spy Squad • Gadgets</span>
+      <span class="pill">Video Game Hero • Levels</span><span class="pill">Dreamhouse Adventures • Sitcom</span>
+      <span class="pill">Princess Adventure • Modern musical</span><span class="pill">Big City, Big Dreams • Stage</span>
+      <span class="pill">It Takes Two • Duo lead</span>
+    </div>
+  </div>
+</section>
+
+<section id="testimonials" class="container">
+  <h2>What collaborators say</h2>
+  <p class="lead">A few imaginary (but very plausible) blurbs from co-stars and directors.</p>
+  <div class="carousel-lite" id="carousel">
+    <div class="track" id="track"></div>
+    <div class="carNav"><button class="carBtn" id="prev" aria-label="Previous">‹</button><button class="carBtn" id="next" aria-label="Next">›</button></div>
+  </div>
+</section>
+
+<section id="contact" class="container">
+  <h2>Contact</h2>
+  <p class="lead">Need a lead who can dance, code a cheat, negotiate a treaty, and deliver a catchy finale? Let’s make it happen.</p>
+  <form onsubmit="event.preventDefault(); sparkle(event); alert('Wire to Formspree or your backend');">
+    <div class="row g-2">
+      <div class="col-12 col-md-6"><input class="form-control" placeholder="Your name" aria-label="Name" required></div>
+      <div class="col-12 col-md-6"><input class="form-control" type="email" placeholder="Email" aria-label="Email" required></div>
+    </div>
+    <textarea class="form-control" rows="5" placeholder="Your message…" aria-label="Message" required></textarea>
+    <div class="d-flex gap-2 flex-wrap">
+      <button class="primary" type="submit">Send message</button>
+      <button class="ghost" type="reset">Clear</button>
+    </div>
+    <div class="note">Shortcuts: <span class="kbd">G</span> grid • Toggle <strong>Playful</strong> for 3D & sparkle.</div>
+  </form>
+</section>
+
+<footer class="container">
+  <div class="note">© <span id="year"></span> Barbie (animated character). Fan portfolio for showcase purposes.</div>
+</footer>
+
+<!-- Modal (custom lightweight) -->
+<div id="caseModal" class="modal-lite" role="dialog" aria-modal="true" aria-label="Case Study">
+  <div class="sheet" role="document">
+    <div class="mhead">
+      <div class="tag">Case study</div>
+      <h3 id="caseTitle" style="margin:0">Title</h3>
+      <button class="mclose" onclick="closeModal()" aria-label="Close">✕</button>
+    </div>
+    <div class="mbody">
+      <p id="caseBody" class="lead" style="margin-top:0">Body</p>
+      <ul id="caseBullets"></ul>
+      <div class="player" id="player">
+        <div class="poster" id="poster">
+          <button class="primary" id="playBtn">▶ Play video</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ken cameo -->
+<div class="ken" id="ken">
+  <div class="bubble" id="kenBubble" role="status" aria-live="polite">Hi Barbie! 👋 —Ken</div>
+  <button title="Ken cameo" id="kenBtn" aria-label="Ken cameo">
+    <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+      <circle cx="24" cy="24" r="22" fill="#1a1420" stroke="rgba(255,255,255,.2)"/>
+      <circle cx="24" cy="22" r="10" fill="#ffd7c2"/>
+      <rect class="arm" x="26" y="12" width="14" height="6" rx="3" fill="#ffd7c2"/>
+      <circle cx="21" cy="20" r="1.5" fill="#4a2d2d"/><circle cx="27" cy="20" r="1.5" fill="#4a2d2d"/>
+      <path d="M19 26c3 3 7 3 10 0" stroke="#4a2d2d" stroke-width="2" stroke-linecap="round"/>
+      <path d="M18 33c4 3 8 3 12 0" stroke="#ff9bd6" stroke-width="3" stroke-linecap="round"/>
+      <path d="M16 12c3-3 13-3 16 0" stroke="#8cc7ff" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </button>
+</div>
+
+<!-- Theme picker -->
+<div class="picker" id="themePicker" aria-label="Choose theme">
+  <div class="d-flex align-items-center gap-2">
+    <b>Barbie palette</b>
+    <div class="ms-auto d-flex gap-2">
+      <button class="ghost" id="themeClose">Close</button>
+      <button class="primary" id="themeReset">Reset</button>
+    </div>
+  </div>
+  <div class="swatches" id="swatches"></div>
+</div>
+
+<!-- Hidden YT holder -->
+<div id="musicHolder" style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden"></div>
+
+<!-- Bootstrap Bundle (JS) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  const $ = (s,ctx=document)=>ctx.querySelector(s);
+  const $$ = (s,ctx=document)=>Array.from(ctx.querySelectorAll(s));
+
+  /* ========= CASE DATA ========= */
+  const CASES = [
+    { title:'Nutcracker: Clarifying a classic for kids',
+      body:'Reframed ballet storytelling into kid-friendly beats while preserving musical wonder.',
+      bullets:['Mapped each act to a clear goal → obstacle → reward loop.','Recurring visual motifs (snow, sweets, soldier) as “where am I?” anchors.','Choreography signals character growth instead of exposition.'],
+      yt:'v9BkuvhY2xM', q:'barbie nutcracker trailer', img:'Barbie Nutcraker.jpg'
+    },
+    { title:'Rapunzel: Painting new worlds',
+      body:'Art as agency: Rapunzel’s brush opens spaces, letting creativity literally rewrite constraints.',
+      bullets:['Clear rules for “paint → portal” (cooldown, limits, risk).','Color script: muted captivity → saturated freedom.','Iconography: brush, canvas, dragon friend.'],
+      yt:'1CoR0bZuMow', q:'barbie rapunzel trailer', img:'Barbie Rapunzel.jpg'
+    },
+    { title:'Princess & Pauper: Two leads, one voice',
+      body:'Dual-protagonist musical with mirrored choices and harmonized themes.',
+      bullets:['Scene pairs teach contrast quickly.','Leitmotifs blend in duets to show empathy.','Wardrobe silhouettes ensure instant recognition.'],
+      yt:'3mAoYCwGilY', q:'barbie princess and the pauper song trailer', img:'Barbie Princess and Pauper.jpg'
+    },
+    { title:'Fairytopia → Mermaidia: Universe building',
+      body:'Codified magic systems and quest cadence to support sequels and spin-offs.',
+      bullets:['Geography bible: regions, travel constraints, creature roles.','Recurring side characters with episodic utility.','Stakes curve from personal → community → world.'],
+      yt:'cqELq2mpsOs', q:'barbie fairytopia trailer', img:'Barbie Fairytopia Mermaidia.webp'
+    },
+    { title:'12 Dancing Princesses: 12 characters, one rhythm',
+      body:'Readability with a large similar cast via formation logic and color families.',
+      bullets:['Assigned motion motif + palette per sister.','Block group numbers before detail animation.','Floor patterns act as camera guides.'],
+      yt:'BbeAX77Se1w', q:'barbie 12 dancing princesses clip', img:'Barbie 12 DancingPrincesses.jpg'
+    },
+    { title:'Three Musketeers: Heroics, reframed',
+      body:'Action that’s clever, safe, and aspirational.',
+      bullets:['Gadget choreography (fans, ribbons) replaces blades.','Disguise/comedy beats keep tension friendly.','Team roles combine for the finale.'],
+      yt:'KfpidKB7cbw', q:'barbie three musketeers trailer', img:'Barbie & the Three Musketeers.jpg'
+    },
+    { title:'Spy Squad: Team roles & gadgets',
+      body:'A spy caper where puzzles beat peril and tech empowers.',
+      bullets:['Role colors + UI-style overlays explain tools fast.','Setpieces are cooperative puzzles.','STEM flavor without jargon overload.'],
+      yt:'vGGlDdeBrVU', q:'barbie spy squad trailer', img:'Barbie Spy Squad.jpg'
+    },
+    { title:'Video Game Hero: From pixels to 3D',
+      body:'Genre-hopping world with quick onboarding per level.',
+      bullets:['Tutorial moments embedded as dialogue.','UI metaphors for lives, boosts, save points.','Meta jokes keep parents engaged.'],
+      yt:'B66Dfk6LfZ4', q:'barbie video game hero trailer', img:'Barbie Video Game Hero.jpg'
+    },
+    { title:'Dreamhouse Adventures: Sitcom cadence',
+      body:'Character engine for everyday stakes and rewatchability.',
+      bullets:['A/B plot per episode with button gag endings.','Running jokes + recurring side characters.','Soft resets for drop-in viewing.'],
+      yt:'SJnV385Am-M', q:'barbie dreamhouse adventures clip', img:'Barbie Dreamhouse Adventures.jpg'
+    }
+  ];
+
+  /* ===== Render cards with Bootstrap row-cols (mobile-perfect) ===== */
+  const cards = $('#cards');
+  cards.innerHTML = CASES.map((c,i)=>`
+    <div class="col">
+      <article class="card tilt h-100">
+        <figure class="thumb m-0">
+          <img src="${encodeURI(c.img||'')}" alt="Barbie — ${c.title} poster" loading="lazy">
+        </figure>
+        <div class="content">
+          <span class="tag">Case study</span>
+          <h3>${c.title}</h3>
+          <p class="lead">${c.body}</p>
+          <ul class="meta">${c.bullets.slice(0,3).map(b=>`<li>${b}</li>`).join('')}</ul>
+          <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">
+            <a class="chip" href="#" onclick="openCase(${i});return false;">Read & watch</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  `).join('');
+
+  /* ===== Active nav on scroll ===== */
+  const links = $$('.navbar-nav .nav-link');
+  const ids = ['home','work','filmography','testimonials','contact'];
+  const sections = ids.map(id=>document.getElementById(id));
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(a=>a.classList.toggle('active', a.getAttribute('href').slice(1)===e.target.id));
+      }
+    });
+  },{rootMargin:'-45% 0px -50% 0px', threshold:0});
+  sections.forEach(s=>s && obs.observe(s));
+
+  /* ===== Calm ↔ Playful ===== */
+  const tilts = $$('.tilt'); const tiltHandlers = new Map();
+  function attachTilt(el){
+    const onMove = ev=>{ const r = el.getBoundingClientRect(); const px = (ev.clientX - r.left)/r.width - .5; const py = (ev.clientY - r.top)/r.height - .5; el.style.transform = `rotateX(${py*-6}deg) rotateY(${px*6}deg) translateZ(4px)`; };
+    const onLeave = ()=>{ el.style.transform='' };
+    el.addEventListener('pointermove', onMove);
+    el.addEventListener('pointerleave', onLeave);
+    tiltHandlers.set(el,{onMove,onLeave});
+  }
+  function detachTilt(el){ const h = tiltHandlers.get(el); if(!h) return; el.removeEventListener('pointermove', h.onMove); el.removeEventListener('pointerleave', h.onLeave); el.style.transform=''; tiltHandlers.delete(el); }
+  function animateCount(el,to){ const start = +String(el.textContent).replace(/\D/g,'') || 0; const dur = 900; const t0 = performance.now(); function tick(t){ const p=Math.min(1,(t-t0)/dur); el.textContent = Math.round(start+(to-start)*p)+(to>90?'%':'+'); if(p<1) requestAnimationFrame(tick); } requestAnimationFrame(tick); }
+  const modeBtn = $('#modeBtn');
+  function setMode(mode){
+    document.body.setAttribute('data-mode', mode);
+    const playful = mode==='playful';
+    modeBtn.textContent = playful ? '🧘 Calm' : '✨ Playful';
+    modeBtn.setAttribute('aria-pressed', playful ? 'true' : 'false');
+    tilts.forEach(el=> playful ? attachTilt(el) : detachTilt(el));
+    if(playful){ $$('.counter').forEach(el=>animateCount(el,+el.dataset.val)); }
+    toggleSparkleTrail(playful);
+  }
+  modeBtn.addEventListener('click', ()=> setMode(document.body.getAttribute('data-mode')==='calm'?'playful':'calm'));
+
+  /* ===== Grid overlay (G) — aligns to Bootstrap .container exactly ===== */
+  let gridOn=false; let gridInner=null;
+  function ensureGrid(){
+    let overlay = $('#gridOverlay');
+    if(!overlay){
+      overlay = document.createElement('div'); overlay.id='gridOverlay'; overlay.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:9999';
+      gridInner = document.createElement('div'); gridInner.id='gridInner'; overlay.appendChild(gridInner); document.body.appendChild(overlay);
+    }
+    const ref = document.querySelector('header .container') || document.querySelector('.container');
+    if(!ref) return;
+    const rect = ref.getBoundingClientRect();
+    const col = rect.width/12;
+    gridInner.style.cssText = `position:fixed;top:0;left:${rect.left}px;width:${rect.width}px;height:100vh;pointer-events:none;`;
+    gridInner.style.backgroundImage = `repeating-linear-gradient(to right, rgba(255,255,255,.12), rgba(255,255,255,.12) 1px, transparent 1px ${col}px),\n      repeating-linear-gradient(to bottom, rgba(255,255,255,.06), rgba(255,255,255,.06) 1px, transparent 1px 24px)`;
+    gridInner.style.backgroundSize = `${rect.width}px 100%, ${rect.width}px 100%`;
+  }
+  function toggleGrid(){ gridOn=!gridOn; if(gridOn){ ensureGrid(); } else { $('#gridOverlay')?.remove(); gridInner=null; } }
+  $('#gridBtn').addEventListener('click', toggleGrid);
+  addEventListener('keydown', e=>{ if(e.key.toLowerCase()==='g') toggleGrid(); });
+  addEventListener('resize', ()=>{ if(gridOn) ensureGrid(); });
+  addEventListener('orientationchange', ()=>{ if(gridOn) ensureGrid(); });
+
+  /* ===== Case modal + YouTube embed ===== */
+  const modal = $('#caseModal'); const titleEl = $('#caseTitle'); const bodyEl = $('#caseBody');
+  const bulletsEl = $('#caseBullets'); const player = $('#player'); const poster = $('#poster'); let current = null;
+  function ytEmbedSrc(c){ if(c.yt){ return `https://www.youtube.com/embed/${c.yt}?autoplay=1&mute=1&rel=0&playsinline=1`; } const q = encodeURIComponent(c.q || c.title); return `https://www.youtube.com/embed?listType=search&list=${q}&autoplay=1&mute=1&rel=0&playsinline=1`; }
+  function openCase(i){
+    const c = current = {...CASES[i]};
+    titleEl.textContent = c.title; bodyEl.textContent = c.body;
+    bulletsEl.innerHTML = ''; c.bullets.forEach(b=>{ const li=document.createElement('li'); li.textContent=b; bulletsEl.appendChild(li); });
+
+    poster.innerHTML = '';
+    const imgSrc = c.img ? encodeURI(c.img) : '';
+    if(imgSrc){ poster.style.backgroundImage = `linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.7)), url('${imgSrc}')`; }
+    else if(c.yt){ poster.style.backgroundImage = `url(https://img.youtube.com/vi/${c.yt}/hqdefault.jpg)`; }
+    else { poster.style.backgroundImage = 'linear-gradient(180deg, rgba(0,0,0,.3), rgba(0,0,0,.7))'; poster.innerHTML = `<div style="text-align:center;opacity:.9">Search: <b>${c.q || c.title}</b></div>`; }
+
+    modal.classList.add('open');
+    poster.addEventListener('click', loadPlayer, {once:true});
+    $('#playBtn')?.addEventListener('click', loadPlayer, {once:true});
+  }
+  function loadPlayer(){
+    const src = ytEmbedSrc(current);
+    player.innerHTML = `<iframe width="100%" height="100%" src="${src}" title="YouTube video"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowfullscreen style="border:0"></iframe>`;
+  }
+  function closeModal(){ modal.classList.remove('open'); player.innerHTML = `<div class="poster" id="poster"><button class="primary" id="playBtn">▶ Play video</button></div>`; }
+  window.openCase = openCase; window.closeModal = closeModal;
+  modal.addEventListener('click', e=>{ if(e.target===modal) closeModal(); });
+  addEventListener('keydown', e=>{ if(e.key==='Escape' && modal.classList.contains('open')) closeModal(); });
+
+  /* ===== Testimonials carousel ===== */
+  const TESTIMONIALS = [
+    {q:'Barbie turned a chaotic launch into a standing ovation.', who:'— Director of “Princess & Pauper”'},
+    {q:'She finds the heart of every scene, then makes it sing.', who:'— Choreographer, “12 Dancing Princesses”'},
+    {q:'Team morale and story clarity? Up and to the right.', who:'— Producer, “Fairytopia”'},
+    {q:'A problem-solver with perfect comedic timing.', who:'— Showrunner, “Dreamhouse Adventures”'},
+    {q:'Kids cheered, parents smiled. That’s craft.', who:'— Editor, “Nutcracker”'}
+  ];
+  const track = $('#track');
+  track.innerHTML = TESTIMONIALS.map(t=>`<div class="tcard"><p>“${t.q}”</p><b>${t.who}</b></div>`).join('');
+  let pos = 0, autoId=null, dragging=false, lastX=0;
+  function clamp(){ const max = Math.max(0, track.scrollWidth - track.parentElement.clientWidth); pos = Math.max(Math.min(pos, 0), -max); }
+  function go(delta=1){ const item = track.firstElementChild?.getBoundingClientRect().width || 360; pos += delta*item; clamp(); track.style.transform = `translateX(${pos}px)`; }
+  function auto(){ clearInterval(autoId); autoId = setInterval(()=>go(-1), 2600); }
+  $('#prev').onclick = ()=>go(1); $('#next').onclick = ()=>go(-1);
+  track.addEventListener('pointerdown', e=>{ dragging=true; lastX=e.clientX; track.setPointerCapture(e.pointerId); clearInterval(autoId); });
+  track.addEventListener('pointermove', e=>{ if(!dragging) return; const dx=e.clientX-lastX; lastX=e.clientX; pos+=dx; clamp(); track.style.transform=`translateX(${pos}px)`; });
+  track.addEventListener('pointerup', ()=>{ dragging=false; auto(); });
+  auto();
+
+  /* ===== Avatar upload ===== */
+  $('#avatarInput').addEventListener('change', (e)=>{ const f = e.target.files[0]; if(!f) return; const reader = new FileReader(); reader.onload = ev=>{ $('#avatar').src = ev.target.result; }; reader.readAsDataURL(f); });
+
+  /* ===== Sparkles ===== */
+  let trailOn=false;
+  function toggleSparkleTrail(on){ trailOn=on; }
+  addEventListener('pointermove', (ev)=>{
+    if(!trailOn) return;
+    for(let i=0;i<2;i++){
+      const s = document.createElement('div');
+      const size = 4 + Math.random()*4;
+      s.style.cssText = `position:fixed; left:${ev.clientX}px; top:${ev.clientY}px; width:${size}px; height:${size}px; border-radius:50%; background:${Math.random()<.5?'var(--mint)':'var(--pink)'}; box-shadow:0 0 12px currentColor; z-index:9999; pointer-events:none;`;
+      document.body.appendChild(s);
+      const dx = (Math.random()-.5)*60, dy = (Math.random()-.5)*60;
+      s.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${dx}px,${dy}px)`,opacity:0}],{duration:700,easing:'ease-out'}).onfinish=()=>s.remove();
+    }
+  });
+  function sparkle(){ // minimal firework for submit (why: user feedback)
+    const r = {x: innerWidth/2, y: innerHeight*.22};
+    for(let i=0;i<36;i++){
+      const c = document.createElement('div');
+      c.style.cssText = `position:fixed; left:${r.x}px; top:${r.y}px; width:6px; height:6px; border-radius:2px; background:${i%3? 'var(--pink)':'var(--mint)'}; box-shadow:0 0 8px currentColor; z-index:9999; pointer-events:none;`;
+      document.body.appendChild(c);
+      const ang = (i/36)*Math.PI*2; const speed = 2+Math.random()*4;
+      const dx = Math.cos(ang)*speed*120, dy = Math.sin(ang)*speed*120;
+      c.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${dx}px,${dy}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:900,easing:'cubic-bezier(.2,.7,.2,1)'}).onfinish=()=>c.remove();
+    }
+  }
+  $('#viewWorkBtn').addEventListener('click', ()=>{
+    if(document.body.getAttribute('data-mode')!=='playful') return;
+    const r = $('#viewWorkBtn').getBoundingClientRect();
+    for(let i=0;i<40;i++){
+      const c = document.createElement('div');
+      c.style.cssText = `position:fixed; left:${r.left+r.width/2}px; top:${r.top}px; width:6px; height:6px; border-radius:2px; background:${i%3? 'var(--pink)':'var(--mint)'}; box-shadow:0 0 8px currentColor; z-index:9999; pointer-events:none;`;
+      document.body.appendChild(c);
+      const ang = Math.random()*Math.PI - Math.PI/2; const speed = 3+Math.random()*4;
+      const dx = Math.cos(ang)*speed*100, dy = Math.sin(ang)*speed*100 + 200;
+      c.animate([{transform:'translate(0,0)',opacity:1},{transform:`translate(${dx}px,${dy}px) rotate(${Math.random()*720}deg)`,opacity:0}],{duration:900,easing:'cubic-bezier(.2,.7,.2,1)'}).onfinish=()=>c.remove();
+    }
+  });
+
+  /* ===== Music with YT fallback ===== */
+  const musicBtn = $('#musicBtn');
+  const musicHolder = $('#musicHolder');
+  let audioEl = null;
+  function startLocalMusic(){ if(!audioEl){ audioEl = new Audio('Barbie in the 12 Dancing Princesses Theme.mp3'); audioEl.loop = true; audioEl.preload = 'auto'; } audioEl.volume = 0.9; return audioEl.play(); }
+  function stopLocalMusic(){ if(audioEl){ audioEl.pause(); audioEl.currentTime = 0; } }
+  function startYTBackup(){ const q = encodeURIComponent('barbie movie soundtrack'); const src = `https://www.youtube.com/embed?listType=search&list=${q}&autoplay=1&mute=0&loop=1&rel=0&playsinline=1`; musicHolder.innerHTML = `<iframe width="1" height="1" src="${src}" title="Barbie soundtrack" allow="autoplay"></iframe>`; }
+  function stopYTBackup(){ musicHolder.innerHTML=''; }
+  musicBtn.addEventListener('click', async ()=>{ const on = musicBtn.getAttribute('aria-pressed')==='true'; if(on){ musicBtn.setAttribute('aria-pressed','false'); musicBtn.textContent='♪ Music'; stopLocalMusic(); stopYTBackup(); return; } musicBtn.setAttribute('aria-pressed','true'); musicBtn.textContent='🔊 Music'; try{ await startLocalMusic(); stopYTBackup(); } catch{ startYTBackup(); } });
+
+  /* ===== Theme picker (includes --pearl) ===== */
+  const themeBtn = $('#themeBtn');
+  const picker = $('#themePicker');
+  const swatches = $('#swatches');
+  const PRESETS = {
+    Classic:   { bg:'#0f0a11', panel:'#151019', p2:'#120e17', text:'#fff3fb', muted:'#e7cfe1', pink:'#ff4fbf', rose:'#ff9bd6', mint:'#aefcff', pearl:'#ffe6f5' },
+    Dreamhouse:{ bg:'#251423', panel:'#2d1a2a', p2:'#211222', text:'#ffe7f5', muted:'#ffd1eb', pink:'#ff64c8', rose:'#ff9ad6', mint:'#ffd399', pearl:'#ffe7f5' },
+    Malibu:    { bg:'#0b1220', panel:'#0f1627', p2:'#0c1422', text:'#e8f7ff', muted:'#bfe9ff', pink:'#ff6bd6', rose:'#ffc1e9', mint:'#8be9ff', pearl:'#e8f7ff' },
+    NeonPop:   { bg:'#101010', panel:'#171717', p2:'#121212', text:'#fafafa', muted:'#d6d6d6', pink:'#ff2aa3', rose:'#ff77d9', mint:'#00f2ff', pearl:'#ffffff' },
+    Pastel:    { bg:'#1b1520', panel:'#221a27', p2:'#1d1723', text:'#fff6fb', muted:'#f0dbe8', pink:'#ff7cc8', rose:'#ffc2e6', mint:'#c9fff6', pearl:'#fff6fb' },
+  };
+  function applyPreset(p){ const r = document.documentElement.style; r.setProperty('--bg', p.bg); r.setProperty('--panel', p.panel); r.setProperty('--panel-2', p.p2); r.setProperty('--text', p.text); r.setProperty('--muted', p.muted); r.setProperty('--pink', p.pink); r.setProperty('--rose', p.rose); r.setProperty('--mint', p.mint); r.setProperty('--pearl', p.pearl || p.text); localStorage.setItem('barbieTheme', JSON.stringify(p)); }
+  swatches.innerHTML = Object.entries(PRESETS).map(([name,p])=>`
+    <div class="swatch" title="${name}" style="background:
+      linear-gradient(90deg, ${p.pink} 0 50%, ${p.mint} 50% 100%); border-color:${p.rose}" data-name="${name}"></div>`).join('');
+  swatches.addEventListener('click', (e)=>{ const n = e.target.dataset.name; if(!n) return; applyPreset(PRESETS[n]); picker.classList.remove('open'); });
+  $('#themeReset').addEventListener('click', ()=>{ localStorage.removeItem('barbieTheme'); location.reload(); });
+  $('#themeClose').addEventListener('click', ()=> picker.classList.remove('open'));
+  themeBtn.addEventListener('click', ()=> picker.classList.toggle('open'));
+  try{ const saved = JSON.parse(localStorage.getItem('barbieTheme')||'null'); if(saved) applyPreset(saved); }catch{}
+
+  /* ===== Ken says “Hi Barbie!” ===== */
+  const kenBtn = $('#kenBtn');
+  const kenBubble = $('#kenBubble');
+  function showKenHi(){ kenBubble.classList.add('show'); setTimeout(()=>kenBubble.classList.remove('show'), 2400); }
+  kenBtn.addEventListener('click', showKenHi);
+  // automatic hello once on load
+  setTimeout(showKenHi, 1200);
+
+  // Year + default mode
+  $('#year').textContent = new Date().getFullYear();
+  setMode('calm');
+</script>
+</body>
+</html>
